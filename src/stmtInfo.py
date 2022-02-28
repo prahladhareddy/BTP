@@ -15,6 +15,7 @@ class stmtInfo:
         self.condWrite = []
         self.InstEnd = False
         self.BlockEnd = False
+        self.exit = False
 
         
     def __extract_stmt_info(self,stmt):
@@ -58,7 +59,6 @@ class stmtInfo:
         # raise Exception('Not Implimented AbiHint')
         self.InstEnd = True
         self.BlockEnd = True
-        pass
 
     def __Put(self,stmt):
         self.guestAss.append(stmt.offset)
@@ -75,17 +75,17 @@ class stmtInfo:
 
     def __Store(self,stmt):
         self.memAss = False
-        self.usedMem.append(stmt.addr)
+        self.__parseData(stmt.addr)
         self.__parseData(stmt.data)
         # raise Exception('Not Implimented Store')
 
-    def __CAS(self,stmt):
+    def __CAS(self,stmt):  # compare and swap
         raise Exception('Not Implimented CAS')
 
-    def __LLSC(self,stmt):
+    def __LLSC(self,stmt): # Either Load-Linked or Store-Conditional
         raise Exception('Not Implimented LLSC')
 
-    def __MBE(self,stmt):
+    def __MBE(self,stmt):  # memory bus event
         raise Exception('Not Implimented MBE')
 
     def __Dirty(self,stmt):
@@ -96,6 +96,8 @@ class stmtInfo:
         self.condWrite.append(stmt.offsIP)
         self.InstEnd = True
         self.BlockEnd = True
+        self.exit = True
+        
         # raise Exception('Not Implimented Exit')
 
     def __LoadG(self,stmt):

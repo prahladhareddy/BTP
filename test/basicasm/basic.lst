@@ -1,0 +1,22 @@
+     1                                          global  _start
+     2                                          section .text
+     3                                  _start:
+     4 00000000 48BB-                           mov     rbx, message
+     4 00000002 [0000000000000000] 
+     5 0000000A 48031C25[0D000000]              add     rbx, [ind]
+     6 00000012 C60347                          mov BYTE[rbx],71
+     7 00000015 B801000000                      mov     rax, 1
+     8 0000001A BF01000000                      mov     rdi, 1
+     9 0000001F 4889DE                          mov     rsi, rbx
+    10 00000022 BA0D000000                      mov     rdx, 13
+    11 00000027 0F05                            syscall
+    12 00000029 B83C000000                      mov     eax, 60
+    13 0000002E 4831FF                          xor     rdi, rdi
+    14 00000031 0F05                            syscall
+    15                                          
+    16                                          section .data
+    17                                  message:
+    18 00000000 48656C6C6F2C20576F-             db      "Hello, World", 10
+    18 00000009 726C640A           
+    19                                      ind:
+    20 0000000D 08000000                        dd      8

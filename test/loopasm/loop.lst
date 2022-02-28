@@ -1,0 +1,37 @@
+     1                                          global  _start
+     2                                          section .text
+     3                                  _start:
+     4 00000000 488B0425[00000000]              mov     rax, [a]
+     5 00000008 488B1C25[08000000]              mov     rbx, [b]
+     6 00000010 48B9-                           mov     rcx, message
+     6 00000012 [1000000000000000] 
+     7                                  loop:
+     8 0000001A 4883F80A                        cmp     rax, 10
+     9 0000001E 7D09                            jge     end
+    10 00000020 4801D8                          add     rax, rbx
+    11 00000023 4883C301                        add     rbx, 1
+    12 00000027 EBF1                            jmp     loop
+    13                                  end: 
+    14                                  
+    15 00000029 4801C1                          add     rcx, rax
+    16 0000002C B801000000                      mov     rax, 1
+    17 00000031 BF01000000                      mov     rdi, 1
+    18 00000036 4889CE                          mov     rsi, rcx
+    19 00000039 BA01000000                      mov     rdx, 1
+    20 0000003E 0F05                            syscall 
+    21 00000040 B801000000                      mov     rax, 1
+    22 00000045 BF01000000                      mov     rdi, 1
+    23 0000004A B83C000000                      mov     eax, 60
+    24 0000004F 4831FF                          xor     rdi, rdi
+    25 00000052 0F05                            syscall
+    26                                  
+    27                                          
+    28                                          section .data
+    29                                  a:
+    30 00000000 0500000000000000                dd      5,0
+    31                                  b:
+    32 00000008 0400000000000000                dd      4,0
+    33                                  message:
+    34 00000010 68656C6C6F20776F72-             db      "hello world hello world",10
+    34 00000019 6C642068656C6C6F20-
+    34 00000022 776F726C640A       

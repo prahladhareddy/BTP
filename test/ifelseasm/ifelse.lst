@@ -1,0 +1,42 @@
+     1                                          global  _start
+     2                                          section .text
+     3                                  _start:
+     4 00000000 488B0425[00000000]              mov     rax, [a]
+     5 00000008 488B1C25[08000000]              mov     rbx, [b]
+     6 00000010 488B2425[10000000]              mov     rsp, [c]
+     7 00000018 488B2C25[18000000]              mov     rbp, [d]
+     8 00000020 48B9-                           mov     rcx, message
+     8 00000022 [2000000000000000] 
+     9 0000002A 4839D8                          cmp     rax, rbx
+    10 0000002D 7D05                            jge     else
+    11                                  if:     
+    12 0000002F 4801E1                          add     rcx,rsp
+    13 00000032 EB04                            jmp     endifelse
+    14                                  else:
+    15 00000034 4883C102                        add     rcx,2
+    16                                  endifelse:
+    17 00000038 B801000000                      mov     rax, 1
+    18 0000003D BF01000000                      mov     rdi, 1
+    19 00000042 4889CE                          mov     rsi, rcx
+    20 00000045 BA06000000                      mov     rdx, 6
+    21 0000004A 0F05                            syscall 
+    22 0000004C B801000000                      mov     rax, 1
+    23 00000051 BF01000000                      mov     rdi, 1
+    24 00000056 B83C000000                      mov     eax, 60
+    25 0000005B 4831FF                          xor     rdi, rdi
+    26 0000005E 0F05                            syscall
+    27                                  
+    28                                          
+    29                                          section .data
+    30                                  a:
+    31 00000000 0A00000000000000                dd      10,0
+    32                                  b:
+    33 00000008 0400000000000000                dd      4,0
+    34                                  c:
+    35 00000010 0400000000000000                dd      4,0
+    36                                  d:
+    37 00000018 0500000000000000                dd      5,0
+    38                                  message:
+    39 00000020 68656C6C6F20776F72-             db      "hello world hello world",10
+    39 00000029 6C642068656C6C6F20-
+    39 00000032 776F726C640A       
