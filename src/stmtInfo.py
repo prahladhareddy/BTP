@@ -7,6 +7,7 @@ class stmtInfo:
         self.tempAss = []
         self.guestAss = []
         self.memAss = False
+        self.memchng = []
         self.usedTemps = []
         self.usedguest = []
         self.usedMem = []
@@ -16,6 +17,7 @@ class stmtInfo:
         self.InstEnd = False
         self.BlockEnd = False
         self.exit = False
+        
 
         
     def __extract_stmt_info(self,stmt):
@@ -74,9 +76,15 @@ class stmtInfo:
         # raise Exception('Not Implimented WrTmp')
 
     def __Store(self,stmt):
-        self.memAss = False
+        self.memAss = True
         self.__parseData(stmt.addr)
         self.__parseData(stmt.data)
+        if stmt.addr.tag == 'Iex_Const':
+            con = stmt.addr.con.value
+            add1 = (con//8)*8
+            self.memchng.append(add1)
+            if(con%8 !=0):
+                self.memchng.append(add1+8)
         # raise Exception('Not Implimented Store')
 
     def __CAS(self,stmt):  # compare and swap
@@ -169,6 +177,7 @@ class stmtInfo:
         raise Exception('Not Implimented Triop')
 
     def __Binop(self,expr):
+#         print(expr.op)
         for arg in expr.args:
             self.__parseData(arg)
         # raise Exception('Not Implimented Binop')
@@ -180,9 +189,19 @@ class stmtInfo:
     def __Load(self,expr):
         self.memRead = True
         self.__parseData(expr.addr)
+#         print(expr.type)
+        if expr.addr.tag == 'Iex_Const':
+            con = expr.addr.con.value
+            add1 = (con//8)*8
+            self.usedMem.append(add1)
+            if(con%8 !=0):
+                self.usedMem.append(add1+8)
         # raise Exception('Not Implimented Load')
 
     def __Const(self,expr):
+#         print("cons")
+#         print(expr.con.value)
+#         print(expr.result_type(self.tyenv))
         pass
         # raise Exception('Not Implimented Const')
 
